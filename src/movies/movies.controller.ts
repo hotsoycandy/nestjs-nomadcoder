@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { Movie } from './entities/movie.entity';
+import { CreateMovieDTO } from './dto/create-movie.dto';
 
 @Controller('movies')
 export class MoviesController {
@@ -31,7 +32,7 @@ export class MoviesController {
   }
 
   @Post()
-  create(@Body() movieData) {
+  create(@Body() movieData: CreateMovieDTO) {
     return this.moviesService.create(movieData);
   }
 
@@ -41,10 +42,7 @@ export class MoviesController {
   }
 
   @Patch('/:movieId')
-  patch(@Param('movieId') movieId: string, @Body() updateData): string {
-    return {
-      updateMovie: movieId,
-      ...updateData,
-    };
+  patch(@Param('movieId') movieId: string, @Body() updateData) {
+    return this.moviesService.update(parseInt(movieId), updateData);
   }
 }
